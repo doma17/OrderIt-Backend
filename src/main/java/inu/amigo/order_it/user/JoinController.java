@@ -1,10 +1,10 @@
 package inu.amigo.order_it.user;
 
-import inu.amigo.order_it.user.JoinDto;
-import inu.amigo.order_it.user.JoinService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Slf4j

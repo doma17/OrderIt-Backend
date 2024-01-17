@@ -1,4 +1,4 @@
-package inu.amigo.order_it.global.config.user;
+package inu.amigo.order_it.global.user;
 
 import inu.amigo.order_it.user.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,12 +19,7 @@ public class CustomUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collection = new ArrayList<>();
 
-        collection.add(new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return userEntity.getRole().toString();
-            }
-        });
+        collection.add((GrantedAuthority) () -> userEntity.getRole().toString());
 
         return collection;
     }
