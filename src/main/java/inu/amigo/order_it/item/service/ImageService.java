@@ -17,26 +17,40 @@ public class ImageService {
     @Value("${image.path}")
     private String imgLocation;
 
-    public String imageUpload(MultipartRequest request) throws IOException {
-        log.info("[imageUpload] is executed");
-        MultipartFile file = request.getFile("upload");
+    private static final String[] ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg"};
 
-        // Img Content Type Exception 추가 -> 확장자가 png, jpg.. 가 맞는지
+    public String imageUpload(MultipartFile file) throws IOException {
+        log.info("[imageUpload] is executed");
+
+        // file null check
         if (file == null) {
             log.error("[imageUpload] file is NULL");
             throw new IOException("file is empty");
         }
 
         String filename = file.getOriginalFilename();
-        String ext = filename.substring(filename.indexOf("."));
+        String ext = filename.substring(filename.lastIndexOf(".")).toLowerCase();
+
+        // extension check
+        if (!isAllowedExtension(ext)) {
+            log.error("[imageUpload] Invalid file extension");
+            throw new IOException("Invaild file extension");
+        }
 
         String uuidFileName = UUID.randomUUID() + ext;
 
-        String localPath = imgLocation + uuidFileName;
+        File filePath = new File(imgLocation + uuidFileName);
+        file.transferTo(filePath);
 
-        File localFile = new File(localPath);
-        file.transferTo(localFile);
+        return uuidFileName;
+    }
 
-        return localPath;
+    private boolean isAllowedExtension(String extension) {
+        for (String allowedExtension : ALLOWED_EXTENSIONS) {
+            if (allowedExtension.equals(extension)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
