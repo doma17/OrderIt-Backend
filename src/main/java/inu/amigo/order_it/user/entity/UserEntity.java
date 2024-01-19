@@ -16,6 +16,7 @@ public class UserEntity {
 
     @Column(unique = true)
     private String username;
+
     private String password;
 
     @Enumerated(EnumType.STRING)

@@ -1,6 +1,5 @@
 package inu.amigo.order_it.global.user;
 
-import inu.amigo.order_it.global.config.user.CustomUserDetails;
 import inu.amigo.order_it.user.UserRepository;
 import inu.amigo.order_it.user.entity.UserEntity;
 import lombok.extern.slf4j.Slf4j;
