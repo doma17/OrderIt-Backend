@@ -2,8 +2,11 @@ package inu.amigo.order_it.item.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,4 +24,16 @@ public class Option {
     // e.g. HOT -> bool
     //      SHOT -> int
     private boolean isInteger;
+
+    @ManyToMany(mappedBy = "options")
+    private List<Item> items;
+
+    @Builder
+    public Option(String name, int price, String description, boolean isInteger, List<Item> items) {
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.isInteger = isInteger;
+        this.items = items;
+    }
 }

@@ -34,27 +34,25 @@ public class ItemController {
     }
 
     @PostMapping
-    public ResponseEntity<String > createItem(ItemRequestDto itemRequestDto) {
-
+    public ResponseEntity<String> createItem(ItemRequestDto itemRequestDto) {
         try {
             itemService.createItem(itemRequestDto);
-        } catch (Exception e) {
-            return new ResponseEntity<>("item is added", HttpStatus.BAD_REQUEST);
-        }
+            return new ResponseEntity<>("item is added", HttpStatus.CREATED);
 
-        return new ResponseEntity<>("item is added", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("item creation is failed", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{itemId}")
     @ResponseBody
-    public ResponseEntity<String > deleteItemById(@PathVariable Long itemId) {
-
+    public ResponseEntity<String> deleteItemById(@PathVariable Long itemId) {
         try {
             itemService.deleteItem(itemId);
-        } catch (Exception e) {
-            return new ResponseEntity<>("item is not deleted", HttpStatus.BAD_REQUEST);
-        }
+            return new ResponseEntity<>("item is deleted", HttpStatus.ACCEPTED);
 
-        return new ResponseEntity<>("item is deleted", HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("item deleting is failed", HttpStatus.BAD_REQUEST);
+        }
     }
 }
