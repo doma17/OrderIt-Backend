@@ -1,5 +1,7 @@
-package inu.amigo.order_it.user;
+package inu.amigo.order_it.user.service;
 
+import inu.amigo.order_it.user.UserRepository;
+import inu.amigo.order_it.user.dto.JoinDto;
 import inu.amigo.order_it.user.entity.Role;
 import inu.amigo.order_it.user.entity.UserEntity;
 import lombok.extern.slf4j.Slf4j;

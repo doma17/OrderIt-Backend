@@ -61,6 +61,10 @@ public class OptionService {
         }
     }
 
+    public Option createOption(Option option) {
+        return optionRepository.save(option);
+    }
+
     /**
      * 특정 아이템에 옵션을 추가
      *
@@ -76,11 +80,37 @@ public class OptionService {
         List<Option> options = optionRepository.findAllById(optionIds);
 
         item.getOptions().addAll(options);
-        for (Option option : options) {
-            option.getItems().add(item);
-        }
 
         itemRepository.save(item);
-        optionRepository.saveAll(options);
+    }
+
+    public void deleteOption(Long itemId) {
+        log.info("[deleteOption] itemId : {}", itemId);
+
+        if (itemId == null) {
+            throw new IllegalArgumentException("[deleteOption] itemId is null !!");
+        }
+
+        itemRepository.deleteById(itemId);
+    }
+
+    @Transactional
+    public void unmapOptionFromItem(Long itemId, Long optionId) {
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        Optional<Option> optionalOption = optionRepository.findById(optionId);
+
+        if (optionalItem.isPresent() && optionalOption.isPresent()) {
+            Item item = optionalItem.get();
+            Option option = optionalOption.get();
+
+            // 아이템에 매핑된 옵션 목록에서 제거
+            List<Option> itemOptions = item.getOptions();
+            itemOptions.remove(option);
+
+            // 아이템 저장 (옵션 매핑 해제)
+            itemRepository.save(item);
+        } else {
+            throw new IllegalArgumentException("Item or Option not found");
+        }
     }
 }

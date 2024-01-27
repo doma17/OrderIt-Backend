@@ -1,4 +1,4 @@
-package inu.amigo.order_it.user;
+package inu.amigo.order_it.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;

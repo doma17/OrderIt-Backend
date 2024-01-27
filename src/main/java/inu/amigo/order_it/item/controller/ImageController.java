@@ -1,6 +1,9 @@
 package inu.amigo.order_it.item.controller;
 
 import inu.amigo.order_it.item.service.ImageService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -19,6 +22,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+@Tag(name = "Image API")
 @RequestMapping("/api/img")
 @Controller
 public class ImageController {
@@ -41,9 +45,16 @@ public class ImageController {
      * @return 업로드 결과에 대한 응답
      * @throws Exception 이미지 업로드 중 발생한 예외
      */
-    @PostMapping
+    @Operation(summary = "이미지 업로드")
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Map<String, Object> imageUpload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+    public Map<String, Object> imageUpload(
+            @Parameter(
+                    name = "file",
+                    description = "업로드할 이미지 파일",
+                    required = true
+            )
+            @RequestParam("file") MultipartFile multipartFile) throws IOException {
 
         Map<String, Object> responseData = new HashMap<>();
 
@@ -62,8 +73,11 @@ public class ImageController {
      * @return 조회된 이미지 파일 리소스 및 응답 상태
      * @throws MalformedURLException 이미지 파일의 URL 생성 중 발생한 예외
      */
-    @GetMapping("/{filename}")
-    public ResponseEntity<Resource> getImage(@PathVariable("filename") String filename) throws MalformedURLException {
+    @Operation(summary = "이미지 조회")
+    @GetMapping(value = "/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<Resource> getImage(
+            @Parameter(name = "filename", description = "조회할 이미지 파일 이름", required = true)
+            @PathVariable("filename") String filename) throws MalformedURLException {
 
         Path imagePath = Paths.get(imgLocation, filename);
         Resource resource = new UrlResource(imagePath.toUri());

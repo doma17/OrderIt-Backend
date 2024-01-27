@@ -25,15 +25,11 @@ public class Option {
     //      SHOT -> int
     private boolean isInteger;
 
-    @ManyToMany(mappedBy = "options")
-    private List<Item> items;
-
     @Builder
-    public Option(String name, int price, String description, boolean isInteger, List<Item> items) {
+    public Option(String name, int price, String description, boolean isInteger) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.isInteger = isInteger;
-        this.items = items;
     }
 }
