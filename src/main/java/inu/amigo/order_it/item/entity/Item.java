@@ -2,6 +2,7 @@ package inu.amigo.order_it.item.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class Item {
     @Column(unique = true)
     private String name;
 
+    @PositiveOrZero(message = "Price must be a positive or zero.")
     private int price;
     private String imagePath;
 
