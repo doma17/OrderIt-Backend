@@ -1,5 +1,6 @@
 package inu.amigo.order_it.item.service;
 
+import inu.amigo.order_it.item.dto.OptionRequestDto;
 import inu.amigo.order_it.item.entity.Item;
 import inu.amigo.order_it.item.entity.Option;
 import inu.amigo.order_it.item.repository.ItemRepository;
@@ -61,7 +62,21 @@ public class OptionService {
         }
     }
 
-    public Option createOption(Option option) {
+    /**
+     * 옵션 생성
+     *
+     * @param requestDto 옵션 생성 요청 정보
+     * @return 생성된 옵션
+     */
+    public Option createOption(OptionRequestDto requestDto) {
+
+        Option option = Option.builder()
+                .price(requestDto.getPrice())
+                .name(requestDto.getName())
+                .description(requestDto.getDescription())
+                .numericType(requestDto.getNumericType())
+                .build();
+
         return optionRepository.save(option);
     }
 
@@ -84,16 +99,27 @@ public class OptionService {
         itemRepository.save(item);
     }
 
-    public void deleteOption(Long itemId) {
-        log.info("[deleteOption] itemId : {}", itemId);
+    /**
+     * 옵션 삭제
+     *
+     * @param optionId 삭제할 옵션 ID
+     */
+    public void deleteOption(Long optionId) {
+        log.info("[deleteOption] optionId : {}", optionId);
 
-        if (itemId == null) {
-            throw new IllegalArgumentException("[deleteOption] itemId is null !!");
+        if (optionId == null) {
+            throw new IllegalArgumentException("[deleteOption] optionId is null !!");
         }
 
-        itemRepository.deleteById(itemId);
+        optionRepository.deleteById(optionId);
     }
 
+    /**
+     * 아이템에서 옵션 매핑 해제
+     *
+     * @param itemId   아이템 ID
+     * @param optionId 옵션 ID
+     */
     @Transactional
     public void unmapOptionFromItem(Long itemId, Long optionId) {
         Optional<Item> optionalItem = itemRepository.findById(itemId);

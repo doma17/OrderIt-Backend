@@ -1,5 +1,6 @@
 package inu.amigo.order_it.item.controller;
 
+import inu.amigo.order_it.item.dto.OptionRequestDto;
 import inu.amigo.order_it.item.entity.Option;
 import inu.amigo.order_it.item.service.OptionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,7 +56,7 @@ public class OptionController {
                             schema = @Schema(implementation = Option.class)
                     )
             )
-            @RequestBody Option option) {
+            @RequestBody OptionRequestDto option) {
 
         Option createdOption = optionService.createOption(option);
 

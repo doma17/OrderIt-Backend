@@ -19,6 +19,6 @@ public class ItemRequestDto {
     @Schema(description = "Item의 이미지 경로", example = "/api/img/americano.jpg")
     private String imagePath;
 
-    @Schema(description = "Item의 메뉴", example = "Coffee, NonCoffee, Dessert")
+    @Schema(description = "Item의 메뉴", example = "(Coffee, NonCoffee, Dessert)")
     private Menu menu;
 }
