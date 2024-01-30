@@ -4,7 +4,7 @@ package inu.amigo.order_it.item.service;
 import inu.amigo.order_it.item.dto.ItemRequestDto;
 import inu.amigo.order_it.item.dto.ItemResponseDto;
 import inu.amigo.order_it.item.entity.Item;
-import inu.amigo.order_it.item.entity.Menu;
+import inu.amigo.order_it.item.entity.Category;
 import inu.amigo.order_it.item.repository.ItemRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -50,14 +50,14 @@ public class ItemService {
     /**
      * 메뉴에 해당하는 아이템을 조회하여 DTO 형태로 반환
      *
-     * @param menu 조회할 메뉴
+     * @param category 조회할 메뉴
      * @return 메뉴에 해당하는 아이템의 DTO 목록
      */
-    public List<ItemResponseDto> getItemsByMenu (Menu menu) {
+    public List<ItemResponseDto> getItemsByMenu (Category category) {
         log.info("[getItemsByMenu] return items by menu");
 
         List<ItemResponseDto> itemResponseDtoList = new ArrayList<>();
-        List<Item> itemList = itemRepository.findItemsByMenu(menu);
+        List<Item> itemList = itemRepository.findItemsByMenu(category);
 
         for (Item item : itemList) {
             ItemResponseDto itemResponseDto = getItemResponseDto(item);
@@ -81,7 +81,7 @@ public class ItemService {
                 .name(itemRequestDto.getName())
                 .price(itemRequestDto.getPrice())
                 .imagePath(itemRequestDto.getImagePath())
-                .menu(itemRequestDto.getMenu())
+                .category(itemRequestDto.getCategory())
                 .build();
 
         itemRepository.save(item);
@@ -124,7 +124,7 @@ public class ItemService {
      * @param itemRequestDto 생성할 아이템 정보를 담은 DTO
      */
     private static void validateCreateItem(ItemRequestDto itemRequestDto) {
-        if (itemRequestDto.getName() == null || itemRequestDto.getPrice() <= 0 || itemRequestDto.getMenu() == null) {
+        if (itemRequestDto.getName() == null || itemRequestDto.getPrice() <= 0 || itemRequestDto.getCategory() == null) {
             log.error("[createItem] Required parameter is missing");
             throw new IllegalStateException("[createItem] Required parameter is missing");
         }

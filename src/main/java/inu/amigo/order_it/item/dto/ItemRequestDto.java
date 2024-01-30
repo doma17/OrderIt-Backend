@@ -1,6 +1,6 @@
 package inu.amigo.order_it.item.dto;
 
-import inu.amigo.order_it.item.entity.Menu;
+import inu.amigo.order_it.item.entity.Category;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,5 +20,5 @@ public class ItemRequestDto {
     private String imagePath;
 
     @Schema(description = "Item의 메뉴", example = "(Coffee, NonCoffee, Dessert)")
-    private Menu menu;
+    private Category category;
 }

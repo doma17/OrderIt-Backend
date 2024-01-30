@@ -32,14 +32,14 @@ public class Item {
     private List<Option> options;
 
     @Enumerated(value = EnumType.STRING)
-    private Menu menu;
+    private Category category;
 
     @Builder
-    public Item(String name, int price, String imagePath, List<Option> options, Menu menu) {
+    public Item(String name, int price, String imagePath, List<Option> options, Category category) {
         this.name = name;
         this.price = price;
         this.imagePath = imagePath;
         this.options = options;
-        this.menu = menu;
+        this.category = category;
     }
 }

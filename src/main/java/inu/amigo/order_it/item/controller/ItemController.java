@@ -2,7 +2,7 @@ package inu.amigo.order_it.item.controller;
 
 import inu.amigo.order_it.item.dto.ItemRequestDto;
 import inu.amigo.order_it.item.dto.ItemResponseDto;
-import inu.amigo.order_it.item.entity.Menu;
+import inu.amigo.order_it.item.entity.Category;
 import inu.amigo.order_it.item.service.ItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,16 +35,16 @@ public class ItemController {
     }
 
     @Operation(summary = "메뉴 Item 조회")
-    @GetMapping("/{menu}")
+    @GetMapping("/{category}")
     public List<ItemResponseDto> getItemsByMenu(
             @Parameter(
                     name = "menu",
                     description = "조회할 메뉴",
                     required = true,
-                    schema = @Schema(implementation = Menu.class)
+                    schema = @Schema(implementation = Category.class)
             )
-            @PathVariable Menu menu) {
-        return itemService.getItemsByMenu(menu);
+            @PathVariable Category category) {
+        return itemService.getItemsByMenu(category);
     }
 
     @Operation(summary = "메뉴 생성")
