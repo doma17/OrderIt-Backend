@@ -1,6 +1,9 @@
 package inu.amigo.order_it.item.controller;
 
 import inu.amigo.order_it.item.service.ImageService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -19,12 +22,14 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+@Tag(name = "Image API")
 @RequestMapping("/api/img")
 @Controller
 public class ImageController {
 
     private final ImageService imageService;
 
+    // 로컬 이미지 저장 경로
     @Value("${image.path}")
     private String imgLocation;
 
@@ -33,28 +38,46 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    @PostMapping
+    /**
+     * 이미지 업로드를 처리하는 엔드포인트
+     *
+     * @param multipartFile 업로드된 이미지 파일
+     * @return 업로드 결과에 대한 응답
+     * @throws Exception 이미지 업로드 중 발생한 예외
+     */
+    @Operation(summary = "이미지 업로드")
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Map<String, Object> imageUpload(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+    public Map<String, Object> imageUpload(
+            @Parameter(
+                    name = "file",
+                    description = "업로드할 이미지 파일",
+                    required = true
+            )
+            @RequestParam("file") MultipartFile multipartFile) throws IOException {
 
         Map<String, Object> responseData = new HashMap<>();
 
-        try {
-            String imgPath = imageService.imageUpload(multipartFile);
+        String imgPath = imageService.imageUpload(multipartFile);
 
-            responseData.put("uploaded", true);
-            responseData.put("path", imgPath);
-
-        } catch (IOException e) {
-            responseData.put("uploaded", false);
-            responseData.put("error", e.getMessage());
-        }
+        responseData.put("uploaded", true);
+        responseData.put("path", imgPath);
 
         return responseData;
     }
 
-    @GetMapping("/{filename}")
-    public ResponseEntity<Resource> getImage(@PathVariable("filename") String filename) throws MalformedURLException {
+    /**
+     * 이미지 조회를 처리하는 엔드포인트
+     *
+     * @param filename 조회할 이미지 파일 이름
+     * @return 조회된 이미지 파일 리소스 및 응답 상태
+     * @throws MalformedURLException 이미지 파일의 URL 생성 중 발생한 예외
+     */
+    @Operation(summary = "이미지 조회")
+    @GetMapping(value = "/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<Resource> getImage(
+            @Parameter(name = "filename", description = "조회할 이미지 파일 이름", required = true)
+            @PathVariable("filename") String filename) throws MalformedURLException {
 
         Path imagePath = Paths.get(imgLocation, filename);
         Resource resource = new UrlResource(imagePath.toUri());
@@ -66,6 +89,12 @@ public class ImageController {
         }
     }
 
+    /**
+     * 이미지 업로드 또는 조회 중 발생한 IOException을 처리하는 핸들러 메소드
+     *
+     * @param e 이미지 업로드 또는 조회 중 발생한 IOException
+     * @return 에러 응답
+     */
     @ExceptionHandler(IOException.class)
     public ResponseEntity<Map<String, String>> handleIOException(IOException e) {
 

@@ -10,15 +10,26 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+/**
+ * 이미지 업로드 서비스 클래스
+ */
 @Slf4j
 @Service
 public class ImageService {
 
+    // 로컬 이미지 저장 경로
     @Value("${image.path}")
     private String imgLocation;
 
     private static final String[] ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg"};
 
+    /**
+     * 업로드된 이미지 파일을 저장하고 해당 파일의 UUID 기반 고유한 이름을 반환합니다.
+     *
+     * @param file 업로드된 이미지 파일
+     * @return 저장된 이미지 파일의 UUID 기반 고유한 이름
+     * @throws IOException 이미지 파일 업로드 중 발생한 예외
+     */
     public String imageUpload(MultipartFile file) throws IOException {
         log.info("[imageUpload] is executed");
 
@@ -45,6 +56,12 @@ public class ImageService {
         return uuidFileName;
     }
 
+    /**
+     * 허용된 이미지 확장자인지 확인합니다.
+     *
+     * @param extension 확인할 확장자
+     * @return 허용된 확장자인 경우 true, 그렇지 않으면 false
+     */
     private boolean isAllowedExtension(String extension) {
         for (String allowedExtension : ALLOWED_EXTENSIONS) {
             if (allowedExtension.equals(extension)) {
