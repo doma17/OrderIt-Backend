@@ -12,5 +12,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     boolean existsById(Long id);
 
-    List<Item> findItemsByMenu(Category category);
+    List<Item> findItemsByCategory(Category category);
 }

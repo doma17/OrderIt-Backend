@@ -20,6 +20,7 @@ public class Item {
 
     @PositiveOrZero(message = "Price must be a positive or zero.")
     private int price;
+
     private String imagePath;
 
     @Singular("option")

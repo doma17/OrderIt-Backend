@@ -38,7 +38,7 @@ public class ItemController {
     @GetMapping("/{category}")
     public List<ItemResponseDto> getItemsByMenu(
             @Parameter(
-                    name = "menu",
+                    name = "category",
                     description = "조회할 메뉴",
                     required = true,
                     schema = @Schema(implementation = Category.class)

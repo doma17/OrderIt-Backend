@@ -57,7 +57,7 @@ public class ItemService {
         log.info("[getItemsByMenu] return items by menu");
 
         List<ItemResponseDto> itemResponseDtoList = new ArrayList<>();
-        List<Item> itemList = itemRepository.findItemsByMenu(category);
+        List<Item> itemList = itemRepository.findItemsByCategory(category);
 
         for (Item item : itemList) {
             ItemResponseDto itemResponseDto = getItemResponseDto(item);
