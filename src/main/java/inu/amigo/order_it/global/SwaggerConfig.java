@@ -1,4 +1,4 @@
-package inu.amigo.order_it.global.config;
+package inu.amigo.order_it.global;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
