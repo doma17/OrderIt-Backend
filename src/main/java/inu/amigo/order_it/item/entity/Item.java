@@ -23,24 +23,14 @@ public class Item {
 
     private String imagePath;
 
-    @Singular("option")
-    @ManyToMany
-    @JoinTable(
-            name = "item_option",
-            joinColumns = @JoinColumn(name = "item_id"),
-            inverseJoinColumns = @JoinColumn(name = "option_id")
-    )
-    private List<Option> options;
-
     @Enumerated(value = EnumType.STRING)
     private Category category;
 
     @Builder
-    public Item(String name, int price, String imagePath, List<Option> options, Category category) {
+    public Item(String name, int price, String imagePath, Category category) {
         this.name = name;
         this.price = price;
         this.imagePath = imagePath;
-        this.options = options;
         this.category = category;
     }
 }
