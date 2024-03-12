@@ -7,7 +7,7 @@ build/
 
 ### application file & img file ignore
 /src/main/resources/application.properties
-/src/main/resources/static/img/
+/src/main/resources/static/img/**
 
 ### STS ###
 .apt_generated
