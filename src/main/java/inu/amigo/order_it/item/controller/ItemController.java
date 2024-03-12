@@ -14,10 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Tag(name = "Item API")
-@RequestMapping("/api/item")
+@RequestMapping("/item")
 @RestController
 public class ItemController {
 
@@ -45,6 +46,12 @@ public class ItemController {
             )
             @PathVariable Category category) {
         return itemService.getItemsByMenu(category);
+    }
+
+    @Operation(summary = "모든 Category 조회")
+    @GetMapping("/category")
+    public List<Category> getAllCategories() {
+        return Arrays.stream(Category.values()).toList();
     }
 
     @Operation(summary = "메뉴 생성")
