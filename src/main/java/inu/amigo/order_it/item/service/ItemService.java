@@ -77,6 +77,7 @@ public class ItemService {
 
         validateCreateItem(itemRequestDto);
 
+        // [updateItem] 메소드 Builder 패턴과 차이점에 있기 때문에 따로 메소드 생성 X
         Item item = Item.builder()
                 .name(itemRequestDto.getName())
                 .price(itemRequestDto.getPrice())
@@ -123,15 +124,48 @@ public class ItemService {
      *
      * @param itemRequestDto 생성할 아이템 정보를 담은 DTO
      */
-    private static void validateCreateItem(ItemRequestDto itemRequestDto) {
+    private void validateCreateItem(ItemRequestDto itemRequestDto) {
+        // name null check, price range check, category null check
         if (itemRequestDto.getName() == null || itemRequestDto.getPrice() <= 0 || itemRequestDto.getCategory() == null) {
             log.error("[createItem] Required parameter is missing");
             throw new IllegalStateException("[createItem] Required parameter is missing");
         }
-
+        // price range check
         if (itemRequestDto.getPrice() > 100000) {
             log.error("[createItem] Price is too high");
             throw new IllegalStateException("[createItem] Price is too high");
         }
+    }
+
+    /**
+     * 아이템 세부사항 변경 및 저장
+     *
+     * @param itemId            변경할 아이템의 id
+     * @param itemRequestDto    변경할 아이템의 내용
+     * @return itemResponseDto
+     */
+    public ItemResponseDto updateItem(Long itemId, ItemRequestDto itemRequestDto) {
+        log.info("[changeDifferent] itemId : {}", itemId);
+        validateCreateItem(itemRequestDto);
+
+        Item updatedItem = null;
+
+        if (itemRepository.existsById(itemId)) {
+            Item item = Item.builder()
+                    .id(itemId)
+                    .name(itemRequestDto.getName())
+                    .price(itemRequestDto.getPrice())
+                    .category(itemRequestDto.getCategory())
+                    .imagePath(itemRequestDto.getImagePath())
+                    .build();
+
+            itemRepository.deleteById(itemId);
+            updatedItem = itemRepository.save(item);
+        }
+        else {
+            throw new EntityNotFoundException("[updateItem] item id is invalid");
+        }
+
+        return getItemResponseDto(updatedItem);
     }
 }

@@ -27,7 +27,8 @@ public class Item {
     private Category category;
 
     @Builder
-    public Item(String name, int price, String imagePath, Category category) {
+    public Item(Long id, String name, int price, String imagePath, Category category) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.imagePath = imagePath;

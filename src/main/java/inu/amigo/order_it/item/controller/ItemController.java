@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Tag(name = "Item API")
-@RequestMapping("/item")
+@RequestMapping("/api/item")
 @RestController
 public class ItemController {
 
@@ -74,6 +74,12 @@ public class ItemController {
         } catch (Exception e) {
             return new ResponseEntity<>("item creation is failed", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Operation(summary = "메뉴 변경")
+    @PutMapping("/{itemId}")
+    public ItemResponseDto putItem(@PathVariable Long itemId, ItemRequestDto itemRequestDto) {
+        return itemService.updateItem(itemId, itemRequestDto);
     }
 
     @Operation(summary = "메뉴 삭제")

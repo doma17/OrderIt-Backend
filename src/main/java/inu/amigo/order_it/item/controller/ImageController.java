@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Tag(name = "Image API")
-@RequestMapping("/img")
+@RequestMapping("/api/img")
 @Controller
 public class ImageController {
 
