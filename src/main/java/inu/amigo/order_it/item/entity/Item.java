@@ -8,7 +8,7 @@ import lombok.*;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Item {
 
@@ -27,11 +27,18 @@ public class Item {
     private Category category;
 
     @Builder
-    public Item(Long id, String name, int price, String imagePath, Category category) {
-        this.id = id;
+    public Item(String name, int price, String imagePath, Category category) {
         this.name = name;
         this.price = price;
         this.imagePath = imagePath;
         this.category = category;
+    }
+
+    public Item updateItem(String name, int price, String imagePath, Category category) {
+        this.name = name;
+        this.price = price;
+        this.imagePath = imagePath;
+        this.category = category;
+        return this;
     }
 }

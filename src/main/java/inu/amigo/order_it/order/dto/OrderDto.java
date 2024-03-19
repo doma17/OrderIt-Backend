@@ -8,7 +8,7 @@ import java.util.List;
 @Getter @Setter
 public class OrderDto {
 
-    private List<OrderItemDto> orderItemDtoList;
+    private List<DetailDto> detailDtoList;
 
     private int totalPrice;
 }

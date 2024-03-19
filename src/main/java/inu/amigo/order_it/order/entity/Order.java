@@ -1,28 +1,28 @@
 package inu.amigo.order_it.order.entity;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Table(name = "orders") // order은 SQL 예약어
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Order {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems = new ArrayList<>();
+    @OneToMany
+    @JoinColumn(name = "order_id")
+    private List<Detail> details = new ArrayList<>();
 
     private int totalPrice;
+
+    @Builder
+    public Order(List<Detail> details, int totalPrice) {
+        this.details = details;
+        this.totalPrice = totalPrice;
+    }
 }

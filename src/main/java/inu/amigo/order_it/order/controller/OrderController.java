@@ -1,7 +1,11 @@
 package inu.amigo.order_it.order.controller;
 
+import inu.amigo.order_it.item.dto.ItemRequestDto;
 import inu.amigo.order_it.order.service.OrderService;
 import inu.amigo.order_it.order.dto.OrderDto;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +29,16 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<String> postOrderItem(OrderDto orderDto) {
-
+    public ResponseEntity<String> postOrderItem(
+            @Parameter(
+                    name = "orderDto",
+                    description = "주문할 Item 정보",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = OrderDto.class)
+                    )
+            ) OrderDto orderDto) {
         try {
             orderService.createOrder(orderDto);
             return new ResponseEntity<>("order success", HttpStatus.OK);

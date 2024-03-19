@@ -145,27 +145,19 @@ public class ItemService {
      * @return itemResponseDto
      */
     public ItemResponseDto updateItem(Long itemId, ItemRequestDto itemRequestDto) {
-        log.info("[changeDifferent] itemId : {}", itemId);
+        log.info("[updateItem] itemId : {}", itemId);
         validateCreateItem(itemRequestDto);
 
-        Item updatedItem = null;
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new EntityNotFoundException("[updateItem] item id is not found"));
 
-        if (itemRepository.existsById(itemId)) {
-            Item item = Item.builder()
-                    .id(itemId)
-                    .name(itemRequestDto.getName())
-                    .price(itemRequestDto.getPrice())
-                    .category(itemRequestDto.getCategory())
-                    .imagePath(itemRequestDto.getImagePath())
-                    .build();
+        item = item.updateItem(
+                itemRequestDto.getName(),
+                itemRequestDto.getPrice(),
+                itemRequestDto.getImagePath(),
+                itemRequestDto.getCategory());
 
-            itemRepository.deleteById(itemId);
-            updatedItem = itemRepository.save(item);
-        }
-        else {
-            throw new EntityNotFoundException("[updateItem] item id is invalid");
-        }
+        item = itemRepository.save(item);
 
-        return getItemResponseDto(updatedItem);
+        return getItemResponseDto(item);
     }
 }

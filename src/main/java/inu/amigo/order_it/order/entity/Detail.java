@@ -2,16 +2,12 @@ package inu.amigo.order_it.order.entity;
 
 import inu.amigo.order_it.item.entity.Item;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class OrderItem {
-
+public class Detail {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -20,6 +16,9 @@ public class OrderItem {
 
     private int quantity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Order order;
+    @Builder
+    public Detail(Item item, int quantity) {
+        this.item = item;
+        this.quantity = quantity;
+    }
 }
