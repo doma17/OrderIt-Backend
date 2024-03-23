@@ -20,6 +20,6 @@ public class SwaggerConfig {
         return new Info()
                 .title("Spring Doc")
                 .description("OrderIt Swagger UI")
-                .version("1.0.1");
+                .version("2.0.1");
     }
 }

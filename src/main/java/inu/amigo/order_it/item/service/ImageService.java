@@ -39,8 +39,8 @@ public class ImageService {
             throw new IOException("file is empty");
         }
 
-        String filename = file.getOriginalFilename();
-        String ext = filename.substring(filename.lastIndexOf(".")).toLowerCase();
+        String originalFilename = file.getOriginalFilename();
+        String ext = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
 
         // extension check
         if (!isAllowedExtension(ext)) {
@@ -49,10 +49,11 @@ public class ImageService {
         }
 
         // (e.g.) -> (uuid)_filename.extension
-        String uuidFileName = UUID.randomUUID() + "_" + filename + ext;
+        String uuidFileName = UUID.randomUUID() + "_" + originalFilename;
 
         File filePath = new File(imgLocation + uuidFileName);
         file.transferTo(filePath);
+        log.info("[imageUpload] uuidFileName = {}", uuidFileName);
 
         return uuidFileName;
     }

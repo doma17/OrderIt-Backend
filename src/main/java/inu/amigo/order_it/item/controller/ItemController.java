@@ -45,6 +45,7 @@ public class ItemController {
                     schema = @Schema(implementation = Category.class)
             )
             @PathVariable Category category) {
+
         return itemService.getItemsByMenu(category);
     }
 
@@ -66,7 +67,8 @@ public class ItemController {
                             schema = @Schema(implementation = ItemRequestDto.class)
                     )
             )
-            ItemRequestDto itemRequestDto) {
+            @RequestBody ItemRequestDto itemRequestDto) {
+
         try {
             itemService.createItem(itemRequestDto);
             return new ResponseEntity<>("item is added", HttpStatus.CREATED);
@@ -78,7 +80,9 @@ public class ItemController {
 
     @Operation(summary = "메뉴 변경")
     @PutMapping("/{itemId}")
-    public ItemResponseDto putItem(@PathVariable Long itemId, ItemRequestDto itemRequestDto) {
+    public ItemResponseDto putItem(@PathVariable Long itemId,
+                                   @RequestBody ItemRequestDto itemRequestDto) {
+
         return itemService.updateItem(itemId, itemRequestDto);
     }
 

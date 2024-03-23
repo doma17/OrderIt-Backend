@@ -33,6 +33,7 @@ public class ItemService {
      *
      * @return 모든 아이템의 DTO 목록
      */
+
     public List<ItemResponseDto> getAllItems() {
         log.info("[getAllItems] return all items");
 
@@ -73,6 +74,7 @@ public class ItemService {
      * @param itemRequestDto 생성할 아이템 정보를 담은 DTO
      */
     public void createItem(ItemRequestDto itemRequestDto) {
+        log.info("[createItem] ItemRequestDto : {}", itemRequestDto.toString());
         log.info("[createItem] item name = {}", itemRequestDto.getName());
 
         validateCreateItem(itemRequestDto);
@@ -125,6 +127,7 @@ public class ItemService {
      * @param itemRequestDto 생성할 아이템 정보를 담은 DTO
      */
     private void validateCreateItem(ItemRequestDto itemRequestDto) {
+        log.info("[validateCreateItem] ItemRequestDto : {}", itemRequestDto.toString());
         // name null check, price range check, category null check
         if (itemRequestDto.getName() == null || itemRequestDto.getPrice() <= 0 || itemRequestDto.getCategory() == null) {
             log.error("[createItem] Required parameter is missing");
@@ -135,6 +138,7 @@ public class ItemService {
             log.error("[createItem] Price is too high");
             throw new IllegalStateException("[createItem] Price is too high");
         }
+        log.info("[validateCreateItem] is success");
     }
 
     /**
