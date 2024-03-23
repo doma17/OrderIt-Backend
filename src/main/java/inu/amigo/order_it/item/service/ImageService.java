@@ -48,14 +48,11 @@ public class ImageService {
             throw new IOException("Invaild file extension");
         }
 
-        // (e.g.) -> (uuid)_filename.extension
-        String uuidFileName = UUID.randomUUID() + "_" + originalFilename;
-
-        File filePath = new File(imgLocation + uuidFileName);
+        File filePath = new File(imgLocation + originalFilename);
         file.transferTo(filePath);
-        log.info("[imageUpload] uuidFileName = {}", uuidFileName);
+        log.info("[imageUpload] uuidFileName = {}", originalFilename);
 
-        return uuidFileName;
+        return originalFilename;
     }
 
     /**

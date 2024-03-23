@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Tag(name = "Image API")
-@RequestMapping("/api/img")
+@RequestMapping
 @Controller
 public class ImageController {
 
@@ -46,7 +46,7 @@ public class ImageController {
      * @throws Exception 이미지 업로드 중 발생한 예외
      */
     @Operation(summary = "이미지 업로드")
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/api/img/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Map<String, Object> imageUpload(
             @Parameter(

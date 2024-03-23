@@ -1,6 +1,7 @@
 package inu.amigo.order_it.item.entity;
 
 
+import inu.amigo.order_it.global.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
@@ -10,7 +11,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Item {
+public class Item extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
