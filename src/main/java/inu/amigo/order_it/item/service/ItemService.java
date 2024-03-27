@@ -68,6 +68,16 @@ public class ItemService {
         return itemResponseDtoList;
     }
 
+    public void createItemList(List<ItemRequestDto> itemRequestDtoList) {
+        log.info("[createItemList] is started ");
+
+        for (ItemRequestDto itemRequestDto : itemRequestDtoList) {
+            createItem(itemRequestDto);
+        }
+
+        log.info("[createItemList] is ended ");
+    }
+
     /**
      * 새로운 아이템을 생성
      *

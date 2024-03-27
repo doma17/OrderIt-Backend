@@ -67,11 +67,11 @@ public class ItemController {
                             schema = @Schema(implementation = ItemRequestDto.class)
                     )
             )
-            @RequestBody ItemRequestDto itemRequestDto) {
+            @RequestBody List<ItemRequestDto> itemRequestDtoList) {
 
         try {
-            itemService.createItem(itemRequestDto);
-            return new ResponseEntity<>("item is added", HttpStatus.CREATED);
+            itemService.createItemList(itemRequestDtoList);
+            return new ResponseEntity<>("items are added", HttpStatus.CREATED);
 
         } catch (Exception e) {
             return new ResponseEntity<>("item creation is failed", HttpStatus.BAD_REQUEST);
