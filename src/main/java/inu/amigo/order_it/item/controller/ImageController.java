@@ -4,6 +4,7 @@ import inu.amigo.order_it.item.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -24,6 +25,7 @@ import java.util.Map;
 
 @Tag(name = "Image API")
 @RequestMapping
+@Slf4j
 @Controller
 public class ImageController {
 
@@ -78,13 +80,17 @@ public class ImageController {
     public ResponseEntity<Resource> getImage(
             @Parameter(name = "filename", description = "조회할 이미지 파일 이름", required = true)
             @PathVariable("filename") String filename) throws MalformedURLException {
+        log.info("[getImage] filename : {}", filename);
 
         Path imagePath = Paths.get(imgLocation, filename);
+        log.info("[getImage] imagePath : {}", imagePath);
         Resource resource = new UrlResource(imagePath.toUri());
 
         if (resource.exists() && resource.isReadable()) {
+            log.info("[getImage] Returning Image");
             return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
         } else {
+            log.error("[getImage] Not Found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
