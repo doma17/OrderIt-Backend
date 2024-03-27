@@ -29,7 +29,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/ubuntu/application/
+            cd /home/EC2_HOST/application/
             sudo systemctl stop order_it.service
-            cp build/libs/order_it-*.jar /home/ubuntu/application/order_it.jar
+            cp build/libs/order_it-*.jar /home/EC2_HOST/application/order_it.jar
             sudo systemctl start order_it.service
