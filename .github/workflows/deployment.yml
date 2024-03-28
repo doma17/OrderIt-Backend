@@ -14,10 +14,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: '17'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
       - name: Build with Gradle
         run: ./gradlew build -x test
@@ -29,7 +32,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/EC2_HOST/application/
+            cd /home/${{ secrets.EC2_HOST }}/application/
             sudo systemctl stop order_it.service
-            cp build/libs/order_it-*.jar /home/EC2_HOST/application/order_it.jar
+            cp build/libs/order_it-*.jar /home/${{ secrets.EC2_HOST }}/application/order_it.jar
             sudo systemctl start order_it.service
