@@ -16,5 +16,6 @@
  echo "> JAR Name: $JAR_NAME"
 
  # nohup java -jar -Duser.timezone=Asia/Seoul $JAR_NAME &
+ nohup java -jar -Duser.timezone=Asia/Seoul $JAR_NAME 1>/nohup/stdout.txt 2>/nohup/stderr.txt
  sudo nohup java -jar $JAR_NAME &
  sleep 2
