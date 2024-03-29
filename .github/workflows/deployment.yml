@@ -30,7 +30,7 @@ jobs:
           username: ubuntu
           host: ${{ secrets.EC2_HOST }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "./build/libs/*.jar"
+          source: "build/libs/*.jar"
           target: "/home/ubuntu/deploy"
 
       - name: Transfer Deploy Script use SCP
@@ -41,7 +41,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "deploy.sh"
           target: "/home/ubuntu/deploy"
-
 
       - name: Execute JAR on EC2
         uses: appleboy/ssh-action@master
