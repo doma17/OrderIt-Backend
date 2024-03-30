@@ -18,10 +18,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Tag(name = "Image API")
 @RequestMapping
@@ -94,6 +99,56 @@ public class ImageController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    /**
+     * 이미지 삭제를 처리하는 엔드포인트
+     *
+     * @param filename 삭제할 이미지 파일 이름
+     */
+    @Operation(summary = "이미지 삭제")
+    @DeleteMapping("/api/img/{filename}")
+    public ResponseEntity<String> deleteImage(@PathVariable String filename) {
+        Path imagePath = Paths.get(imgLocation, filename);
+
+        try {
+            boolean deleted = Files.deleteIfExists(imagePath);
+            if (deleted) {
+                return ResponseEntity.ok("File deleted successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found");
+            }
+        } catch (IOException e) {
+            log.error("Error deleting image file", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting file");
+        }
+    }
+
+
+    /**
+     * 이미지 목록 조회를 처리하는 엔드포인트
+     *
+     * @return 이미지 파일 목록
+     */
+    @Operation(summary = "이미지 목록 조회")
+    @GetMapping("/api/img/list")
+    public ResponseEntity<List<String>> getImageList() {
+        Path dirPath = Paths.get(imgLocation);
+        List<String> imageList = new ArrayList<>();
+
+        try (Stream<Path> stream = Files.walk(dirPath, 1)) {
+            imageList = stream
+                    .filter(Files::isRegularFile)
+                    .map(path -> path.getFileName().toString())
+                    .filter(name -> name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg"))
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            log.error("Error reading image files", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
+        return ResponseEntity.ok(imageList);
+    }
+
 
     /**
      * 이미지 업로드 또는 조회 중 발생한 IOException을 처리하는 핸들러 메소드
