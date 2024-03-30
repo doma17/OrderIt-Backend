@@ -11,4 +11,6 @@ public class OrderDto {
     private List<DetailDto> detailDtoList;
 
     private int totalPrice;
+
+    private OrderType orderType;
 }
