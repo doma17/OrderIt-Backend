@@ -30,10 +30,14 @@ public class OrderService {
     }
 
     public void createOrder(OrderDto orderDto) {
-        log.info("[createOrder]");
+        log.info("[createOrder] orderDto : {}", orderDto.getOrderType());
         List<DetailDto> detailDtoList = orderDto.getDetailDtoList();
 
         // Need Dto Validation Process !!
+
+        if (detailDtoList == null || detailDtoList.isEmpty()) {
+            throw new IllegalArgumentException("[createOrder] detailDtoList is empty");
+        }
 
         int totalPrice = 0;
         List<Detail> details = new ArrayList<>();
@@ -56,6 +60,7 @@ public class OrderService {
         }
 
         Order order = Order.builder()
+                .orderType(orderDto.getOrderType())
                 .details(details)
                 .totalPrice(totalPrice)
                 .build();
