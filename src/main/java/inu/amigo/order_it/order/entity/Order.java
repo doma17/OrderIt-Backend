@@ -1,6 +1,7 @@
 package inu.amigo.order_it.order.entity;
 
 import inu.amigo.order_it.global.BaseTimeEntity;
+import inu.amigo.order_it.order.dto.OrderType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,9 +22,13 @@ public class Order extends BaseTimeEntity {
 
     private int totalPrice;
 
+    @Enumerated(EnumType.STRING)
+    private OrderType orderType;
+
     @Builder
-    public Order(List<Detail> details, int totalPrice) {
+    public Order(List<Detail> details, int totalPrice, OrderType orderType) {
         this.details = details;
         this.totalPrice = totalPrice;
+        this.orderType = orderType;
     }
 }
