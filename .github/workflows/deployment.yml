@@ -49,4 +49,4 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script_stop: true
-          script: chmod +x /home/ubuntu/deploy/deploy.sh && sh /home/ubuntu/deploy/deploy.sh
+          script: chmod +x /home/ubuntu/deploy/deploy.sh && sudo sh /home/ubuntu/deploy/deploy.sh
