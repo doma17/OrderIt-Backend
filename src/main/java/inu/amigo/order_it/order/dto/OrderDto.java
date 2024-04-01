@@ -15,6 +15,6 @@ public class OrderDto {
     @Schema(description = "주문의 총 가격", example = "4500")
     private int totalPrice;
 
-    @Schema(description = "주문의 OrderType", example = "TAKE_OUT")
+    @Schema(description = "주문의 OrderType", example = "TAKE_OUT, ON_SITE")
     private OrderType orderType;
 }
