@@ -68,4 +68,20 @@ public class OrderService {
 
         orderRepository.save(order);
     }
+
+    public String getOrderList() {
+        List<Order> orders = orderRepository.findAll();
+
+        StringBuilder sb = new StringBuilder();
+        for (Order order : orders) {
+            sb.append(order.toString()).append("\n");
+        }
+
+        return sb.toString();
+    }
+
+    public String getOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException("[getOrder] order is not found"));
+        return order.toString();
+    }
 }

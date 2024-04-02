@@ -10,9 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Tag(name = "Order API")
@@ -45,5 +43,19 @@ public class OrderController {
         } catch (Exception e) {
             return new ResponseEntity<>("order failed", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<String> getOrderList() {
+        return new ResponseEntity<>(orderService.getOrderList(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<String> getOrder(@Parameter(
+            name = "orderId",
+            description = "주문 ID",
+            required = true
+    ) @PathVariable Long orderId) {
+        return new ResponseEntity<>(orderService.getOrder(orderId), HttpStatus.OK);
     }
 }
