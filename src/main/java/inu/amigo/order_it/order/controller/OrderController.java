@@ -35,7 +35,7 @@ public class OrderController {
                             mediaType = "application/json",
                             schema = @Schema(implementation = OrderDto.class)
                     )
-            ) OrderDto orderDto) {
+            ) @RequestBody OrderDto orderDto) {
         try {
             orderService.createOrder(orderDto);
             return new ResponseEntity<>("order success", HttpStatus.OK);
