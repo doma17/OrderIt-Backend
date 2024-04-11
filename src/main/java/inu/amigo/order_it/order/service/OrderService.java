@@ -3,6 +3,7 @@ package inu.amigo.order_it.order.service;
 import inu.amigo.order_it.item.entity.Item;
 import inu.amigo.order_it.item.repository.ItemRepository;
 import inu.amigo.order_it.order.dto.DetailDto;
+import inu.amigo.order_it.order.dto.OrderDto;
 import inu.amigo.order_it.order.dto.OrderRequestDto;
 import inu.amigo.order_it.order.dto.OrderResponseDto;
 import inu.amigo.order_it.order.entity.Detail;
@@ -24,10 +25,12 @@ public class OrderService {
 
     private final ItemRepository itemRepository;
 
-    @Autowired
-    public OrderService(OrderRepository orderRepository, ItemRepository itemRepository) {
+    private final PrintService printService;
+
+    public OrderService(OrderRepository orderRepository, ItemRepository itemRepository, PrintService printService) {
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
+        this.printService = printService;
     }
 
     public void createOrder(OrderRequestDto orderRequestDto) {
@@ -101,5 +104,12 @@ public class OrderService {
     public String getOrder(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException("[getOrder] order is not found"));
         return order.toString();
+    }
+
+    public void printReceipt(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() ->
+                new EntityNotFoundException("[printReceipt] order is not found"));
+
+        printService.print(order);
     }
 }
