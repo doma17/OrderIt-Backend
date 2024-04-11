@@ -3,7 +3,6 @@ package inu.amigo.order_it.order.service;
 import inu.amigo.order_it.item.entity.Item;
 import inu.amigo.order_it.item.repository.ItemRepository;
 import inu.amigo.order_it.order.dto.DetailDto;
-import inu.amigo.order_it.order.dto.OrderDto;
 import inu.amigo.order_it.order.dto.OrderRequestDto;
 import inu.amigo.order_it.order.dto.OrderResponseDto;
 import inu.amigo.order_it.order.entity.Detail;
@@ -11,7 +10,6 @@ import inu.amigo.order_it.order.entity.Order;
 import inu.amigo.order_it.order.repository.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
