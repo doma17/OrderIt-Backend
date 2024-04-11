@@ -13,6 +13,9 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * 윈도우 환경에서만 사용가능!!
+ */
 @Slf4j
 @Component
 public class SewooPrinter {

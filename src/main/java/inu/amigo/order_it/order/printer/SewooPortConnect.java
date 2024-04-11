@@ -2,6 +2,9 @@ package inu.amigo.order_it.order.printer;
 
 import com.sewoo.thermal.jni.LKPOSTOT;
 
+/**
+ * 윈도우 환경에서만 사용가능!!
+ */
 public class SewooPortConnect {
 
     private final LKPOSTOT SWLib;
