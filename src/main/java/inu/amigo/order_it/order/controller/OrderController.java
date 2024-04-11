@@ -1,6 +1,7 @@
 package inu.amigo.order_it.order.controller;
 
-import inu.amigo.order_it.order.dto.OrderDto;
+import inu.amigo.order_it.order.dto.OrderRequestDto;
+import inu.amigo.order_it.order.dto.OrderResponseDto;
 import inu.amigo.order_it.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @Tag(name = "Order API")
@@ -33,21 +36,17 @@ public class OrderController {
                     required = true,
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = OrderDto.class)
+                            schema = @Schema(implementation = OrderRequestDto.class)
                     )
-            ) @RequestBody OrderDto orderDto) {
-        try {
-            orderService.createOrder(orderDto);
-            return new ResponseEntity<>("order success", HttpStatus.OK);
+            ) @RequestBody OrderRequestDto orderRequestDto) {
 
-        } catch (Exception e) {
-            return new ResponseEntity<>("order failed", HttpStatus.BAD_REQUEST);
-        }
+        orderService.createOrder(orderRequestDto);
+        return new ResponseEntity<>("order success", HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<String> getOrderList() {
-        return new ResponseEntity<>(orderService.getOrderList(), HttpStatus.OK);
+    public List<OrderResponseDto> getOrderList() {
+        return orderService.getOrderList();
     }
 
     @GetMapping("/{orderId}")

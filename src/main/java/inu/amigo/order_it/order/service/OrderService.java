@@ -3,7 +3,8 @@ package inu.amigo.order_it.order.service;
 import inu.amigo.order_it.item.entity.Item;
 import inu.amigo.order_it.item.repository.ItemRepository;
 import inu.amigo.order_it.order.dto.DetailDto;
-import inu.amigo.order_it.order.dto.OrderDto;
+import inu.amigo.order_it.order.dto.OrderRequestDto;
+import inu.amigo.order_it.order.dto.OrderResponseDto;
 import inu.amigo.order_it.order.entity.Detail;
 import inu.amigo.order_it.order.entity.Order;
 import inu.amigo.order_it.order.repository.OrderRepository;
@@ -29,23 +30,29 @@ public class OrderService {
         this.itemRepository = itemRepository;
     }
 
-    public void createOrder(OrderDto orderDto) {
-        log.info("[createOrder] orderDto : {}", orderDto.getOrderType());
-        List<DetailDto> detailDtoList = orderDto.getDetailDtoList();
+    public void createOrder(OrderRequestDto orderRequestDto) {
+        log.info("[createOrder] orderDto : {}", orderRequestDto.getOrderType());
+        List<DetailDto> detailDtoList = orderRequestDto.getDetailDtoList();
 
         // Need Dto Validation Process !!
 
         if (detailDtoList == null || detailDtoList.isEmpty()) {
+            log.error("[createOrder] detailDtoList is empty");
             throw new IllegalArgumentException("[createOrder] detailDtoList is empty");
         }
 
         int totalPrice = 0;
-        List<Detail> details = new ArrayList<>();
+        List<Detail> detailList = new ArrayList<>();
 
         for (DetailDto detailDto : detailDtoList) {
-            Item item = itemRepository.findById(detailDto.getItemId()).orElseThrow(() -> new EntityNotFoundException("[createOrder] item is not found"));
+            if (itemRepository.existsById(detailDto.getItemId())) {
+                log.error("[createOrder] item is not found");
+                throw new EntityNotFoundException("[createOrder] item is not found");
+            }
+            Item item = itemRepository.findById(detailDto.getItemId()).get();
 
             if (detailDto.getQuantity() <= 0) {
+                log.error("[createOrder] quantity element need to be natural number");
                 throw new IllegalArgumentException("[createOrder] quantity element need to be natural number");
             }
 
@@ -56,12 +63,12 @@ public class OrderService {
                     .quantity(detailDto.getQuantity())
                     .build();
 
-            details.add(detail);
+            detailList.add(detail);
         }
 
         Order order = Order.builder()
-                .orderType(orderDto.getOrderType())
-                .details(details)
+                .orderType(orderRequestDto.getOrderType())
+                .details(detailList)
                 .totalPrice(totalPrice)
                 .build();
         log.info("[createOrder] totalPrice = {}", totalPrice);
@@ -69,15 +76,26 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public String getOrderList() {
+    public List<OrderResponseDto> getOrderList() {
         List<Order> orders = orderRepository.findAll();
-
-        StringBuilder sb = new StringBuilder();
+        List<OrderResponseDto> orderResponseDtoList = new ArrayList<>();
         for (Order order : orders) {
-            sb.append(order.toString()).append("\n");
-        }
+            OrderResponseDto orderResponseDto = new OrderResponseDto();
+            orderResponseDto.setOrderId(order.getId());
+            orderResponseDto.setTotalPrice(order.getTotalPrice());
+            orderResponseDto.setOrderType(order.getOrderType());
 
-        return sb.toString();
+            List<DetailDto> detailDtoList = new ArrayList<>();
+            for (Detail detail : order.getDetails()) {
+                DetailDto detailDto = new DetailDto();
+                detailDto.setItemId(detail.getItem().getId());
+                detailDto.setQuantity(detail.getQuantity());
+                detailDtoList.add(detailDto);
+            }
+            orderResponseDto.setDetailDtoList(detailDtoList);
+            orderResponseDtoList.add(orderResponseDto);
+        }
+        return orderResponseDtoList;
     }
 
     public String getOrder(Long orderId) {
