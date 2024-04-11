@@ -3,6 +3,7 @@ package inu.amigo.order_it.item.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import inu.amigo.order_it.item.entity.Category;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
