@@ -7,6 +7,7 @@ import inu.amigo.order_it.order.dto.OrderRequestDto;
 import inu.amigo.order_it.order.dto.OrderResponseDto;
 import inu.amigo.order_it.order.entity.Detail;
 import inu.amigo.order_it.order.entity.Order;
+import inu.amigo.order_it.order.repository.DetailRepository;
 import inu.amigo.order_it.order.repository.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +24,14 @@ public class OrderService {
 
     private final ItemRepository itemRepository;
 
+    private final DetailRepository detailRepository;
+
     private final PrintService printService;
 
-    public OrderService(OrderRepository orderRepository, ItemRepository itemRepository, PrintService printService) {
+    public OrderService(OrderRepository orderRepository, ItemRepository itemRepository, DetailRepository detailRepository, PrintService printService) {
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
+        this.detailRepository = detailRepository;
         this.printService = printService;
     }
 
@@ -46,8 +50,8 @@ public class OrderService {
         List<Detail> detailList = new ArrayList<>();
 
         for (DetailDto detailDto : detailDtoList) {
-            if (itemRepository.existsById(detailDto.getItemId())) {
-                log.error("[createOrder] item is not found");
+            if (!itemRepository.existsById(detailDto.getItemId())) {
+                log.error("[createOrder] item is not found : {}", detailDto.getItemId());
                 throw new EntityNotFoundException("[createOrder] item is not found");
             }
             Item item = itemRepository.findById(detailDto.getItemId()).get();
@@ -63,6 +67,11 @@ public class OrderService {
                     .item(item)
                     .quantity(detailDto.getQuantity())
                     .build();
+            detail = detailRepository.save(detail);
+
+            log.info("[createOrder] 1 detail id : {}", detail.getId());
+            log.info("[createOrder] 2 detail quantity : {}", detail.getQuantity());
+            log.info("[createOrder] 3 detail item : {}", detail.getItem());
 
             detailList.add(detail);
         }
@@ -81,6 +90,7 @@ public class OrderService {
         List<Order> orders = orderRepository.findAll();
         List<OrderResponseDto> orderResponseDtoList = new ArrayList<>();
         for (Order order : orders) {
+            log.info("[getOrderList] order details size : {}", order.getDetails().size());
             OrderResponseDto orderResponseDto = new OrderResponseDto();
             orderResponseDto.setOrderId(order.getId());
             orderResponseDto.setTotalPrice(order.getTotalPrice());

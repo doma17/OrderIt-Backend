@@ -57,4 +57,10 @@ public class OrderController {
     ) @PathVariable Long orderId) {
         return new ResponseEntity<>(orderService.getOrder(orderId), HttpStatus.OK);
     }
+
+    @PostMapping("/{orderId}")
+    public ResponseEntity<String> printReceipt(@PathVariable Long orderId) {
+        orderService.printReceipt(orderId);
+        return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
 }
