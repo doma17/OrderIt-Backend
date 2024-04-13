@@ -3,6 +3,7 @@ package inu.amigo.order_it.order.controller;
 import inu.amigo.order_it.order.dto.OrderRequestDto;
 import inu.amigo.order_it.order.dto.OrderResponseDto;
 import inu.amigo.order_it.order.service.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,6 +29,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    @Operation(summary = "주문하기")
     @PostMapping
     public ResponseEntity<String> postOrderItem(
             @Parameter(
@@ -44,11 +46,13 @@ public class OrderController {
         return new ResponseEntity<>("order success", HttpStatus.OK);
     }
 
+    @Operation(summary = "주문 목록 조회")
     @GetMapping
     public List<OrderResponseDto> getOrderList() {
         return orderService.getOrderList();
     }
 
+    @Operation(summary = "주문 조회")
     @GetMapping("/{orderId}")
     public ResponseEntity<String> getOrder(@Parameter(
             name = "orderId",
@@ -58,6 +62,7 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getOrder(orderId), HttpStatus.OK);
     }
 
+    @Operation(summary = "주문 영수증 출력")
     @PostMapping("/{orderId}")
     public ResponseEntity<String> printReceipt(@PathVariable Long orderId) {
         orderService.printReceipt(orderId);
