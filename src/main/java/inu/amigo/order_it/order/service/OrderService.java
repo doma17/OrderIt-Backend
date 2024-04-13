@@ -26,13 +26,13 @@ public class OrderService {
 
     private final DetailRepository detailRepository;
 
-    private final PrintService printService;
+//    private final PrintService printService;
 
-    public OrderService(OrderRepository orderRepository, ItemRepository itemRepository, DetailRepository detailRepository, PrintService printService) {
+
+    public OrderService(OrderRepository orderRepository, ItemRepository itemRepository, DetailRepository detailRepository) {
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
         this.detailRepository = detailRepository;
-        this.printService = printService;
     }
 
     public void createOrder(OrderRequestDto orderRequestDto) {
@@ -118,6 +118,6 @@ public class OrderService {
         Order order = orderRepository.findById(orderId).orElseThrow(() ->
                 new EntityNotFoundException("[printReceipt] order is not found"));
 
-        printService.print(order);
+//        printService.print(order);
     }
 }
