@@ -76,6 +76,13 @@ public class OrderService {
             detailList.add(detail);
         }
 
+        if (orderRequestDto.getTotalPrice() == totalPrice)
+            log.info("[createOrder] totalPrice is correct");
+        else {
+            log.error("[createOrder] totalPrice is not correct");
+            throw new IllegalArgumentException("[createOrder] totalPrice is not correct");
+        }
+
         Order order = Order.builder()
                 .orderType(orderRequestDto.getOrderType())
                 .details(detailList)
