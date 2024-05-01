@@ -2,7 +2,7 @@ spring:
   # DB Setting
   datasource:
     driverClassName: org.mariadb.jdbc.Driver
-    url: 'jdbc:mariadb://localhost:3306/order_it'
+    url: 'jdbc:mariadb://mariadb:3308/order_it'
     username: root
     password: kwak8174
 
@@ -32,7 +32,7 @@ springdoc:
 
 # Image Path
 image:
-  path: /home/ubuntu/img/
+  path: /home/order-it/img/
 
 # docker-compose Image Path : /home/order-it/img/
 # Server Image Path : /home/ubuntu/img/
