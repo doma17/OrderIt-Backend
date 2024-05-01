@@ -85,13 +85,14 @@ public class ItemService {
      */
     public void createItem(ItemRequestDto itemRequestDto) {
         log.info("[createItem] ItemRequestDto : {}", itemRequestDto.toString());
-        log.info("[createItem] item name = {}", itemRequestDto.getName());
+        log.info("[createItem] item name = {}", itemRequestDto.getEng_name());
 
         validateCreateItem(itemRequestDto);
 
         // [updateItem] 메소드 Builder 패턴과 차이점에 있기 때문에 따로 메소드 생성 X
         Item item = Item.builder()
-                .name(itemRequestDto.getName())
+                .eng_name(itemRequestDto.getEng_name())
+                .kor_name(itemRequestDto.getKor_name())
                 .price(itemRequestDto.getPrice())
                 .imagePath(itemRequestDto.getImagePath())
                 .category(itemRequestDto.getCategory())
@@ -126,7 +127,8 @@ public class ItemService {
         return ItemResponseDto.builder()
                 .item_id(item.getId())
                 .price(item.getPrice())
-                .name(item.getName())
+                .eng_name(item.getEng_name())
+                .kor_name(item.getKor_name())
                 .imagePath(item.getImagePath())
                 .build();
     }
@@ -139,7 +141,7 @@ public class ItemService {
     private void validateCreateItem(ItemRequestDto itemRequestDto) {
         log.info("[validateCreateItem] ItemRequestDto : {}", itemRequestDto.toString());
         // name null check, price range check, category null check
-        if (itemRequestDto.getName() == null || itemRequestDto.getPrice() <= 0 || itemRequestDto.getCategory() == null) {
+        if (itemRequestDto.getEng_name() == null || itemRequestDto.getKor_name() == null || itemRequestDto.getPrice() <= 0 || itemRequestDto.getCategory() == null) {
             log.error("[createItem] Required parameter is missing");
             throw new IllegalStateException("[createItem] Required parameter is missing");
         }
@@ -165,7 +167,8 @@ public class ItemService {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new EntityNotFoundException("[updateItem] item id is not found"));
 
         item = item.updateItem(
-                itemRequestDto.getName(),
+                itemRequestDto.getEng_name(),
+                itemRequestDto.getKor_name(),
                 itemRequestDto.getPrice(),
                 itemRequestDto.getImagePath(),
                 itemRequestDto.getCategory());
