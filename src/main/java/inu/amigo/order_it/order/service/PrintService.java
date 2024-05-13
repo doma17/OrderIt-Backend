@@ -28,7 +28,7 @@
 //
 //        for (Detail detail : order.getDetails()) {
 //            ReceiptDetailDto receiptDetail = new ReceiptDetailDto();
-//            receiptDetail.setName(detail.getItem().getName());
+//            receiptDetail.setName(detail.getItem().getKor_name());
 //            receiptDetail.setQuantity(detail.getQuantity());
 //            receiptDetail.setPrice(receiptDetail.getQuantity() * detail.getItem().getPrice());
 //            totalPrice += receiptDetail.getPrice();
