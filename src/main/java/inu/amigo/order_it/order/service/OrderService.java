@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -26,16 +27,16 @@ public class OrderService {
 
     private final DetailRepository detailRepository;
 
-//    private final PrintService printService;
+    private final PrintService printService;
 
-
-    public OrderService(OrderRepository orderRepository, ItemRepository itemRepository, DetailRepository detailRepository) {
+    public OrderService(OrderRepository orderRepository, ItemRepository itemRepository, DetailRepository detailRepository, PrintService printService) {
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
         this.detailRepository = detailRepository;
+        this.printService = printService;
     }
 
-    public void createOrder(OrderRequestDto orderRequestDto) {
+    public OrderResponseDto createOrder(OrderRequestDto orderRequestDto) {
         log.info("[createOrder] orderDto : {}", orderRequestDto.getOrderType());
         List<DetailDto> detailDtoList = orderRequestDto.getDetailDtoList();
 
@@ -90,7 +91,21 @@ public class OrderService {
                 .build();
         log.info("[createOrder] totalPrice = {}", totalPrice);
 
-        orderRepository.save(order);
+        order = orderRepository.save(order);
+        OrderResponseDto orderResponseDto = new OrderResponseDto();
+        orderResponseDto.setOrderId(order.getId());
+        orderResponseDto.setTotalPrice(order.getTotalPrice());
+        orderResponseDto.setOrderType(order.getOrderType());
+
+        detailDtoList = new ArrayList<>();
+        for (Detail detail : order.getDetails()) {
+            DetailDto detailDto = new DetailDto();
+            detailDto.setItemId(detail.getItem().getId());
+            detailDto.setQuantity(detail.getQuantity());
+            detailDtoList.add(detailDto);
+        }
+        orderResponseDto.setDetailDtoList(detailDtoList);
+        return orderResponseDto;
     }
 
     public List<OrderResponseDto> getOrderList() {
@@ -116,15 +131,29 @@ public class OrderService {
         return orderResponseDtoList;
     }
 
-    public String getOrder(Long orderId) {
+    public OrderResponseDto getOrder(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException("[getOrder] order is not found"));
-        return order.toString();
+        log.info("[getOrderList] order details size : {}", order.getDetails().size());
+        OrderResponseDto orderResponseDto = new OrderResponseDto();
+        orderResponseDto.setOrderId(order.getId());
+        orderResponseDto.setTotalPrice(order.getTotalPrice());
+        orderResponseDto.setOrderType(order.getOrderType());
+
+        List<DetailDto> detailDtoList = new ArrayList<>();
+        for (Detail detail : order.getDetails()) {
+            DetailDto detailDto = new DetailDto();
+            detailDto.setItemId(detail.getItem().getId());
+            detailDto.setQuantity(detail.getQuantity());
+            detailDtoList.add(detailDto);
+        }
+        orderResponseDto.setDetailDtoList(detailDtoList);
+        return orderResponseDto;
     }
 
     public void printReceipt(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() ->
                 new EntityNotFoundException("[printReceipt] order is not found"));
-
-//        printService.print(order);
+        log.info("[printReceipt] orderId : {}", orderId);
+        printService.print(order);
     }
 }
