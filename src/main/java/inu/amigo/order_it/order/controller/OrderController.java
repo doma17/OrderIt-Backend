@@ -31,7 +31,7 @@ public class OrderController {
 
     @Operation(summary = "주문하기")
     @PostMapping
-    public ResponseEntity<String> postOrderItem(
+    public OrderResponseDto postOrderItem(
             @Parameter(
                     name = "orderDto",
                     description = "주문할 Item 정보",
@@ -42,8 +42,7 @@ public class OrderController {
                     )
             ) @RequestBody OrderRequestDto orderRequestDto) {
 
-        orderService.createOrder(orderRequestDto);
-        return new ResponseEntity<>("order success", HttpStatus.OK);
+        return orderService.createOrder(orderRequestDto);
     }
 
     @Operation(summary = "주문 목록 조회")
@@ -54,12 +53,12 @@ public class OrderController {
 
     @Operation(summary = "주문 조회")
     @GetMapping("/{orderId}")
-    public ResponseEntity<String> getOrder(@Parameter(
+    public OrderResponseDto getOrder(@Parameter(
             name = "orderId",
             description = "주문 ID",
             required = true
     ) @PathVariable Long orderId) {
-        return new ResponseEntity<>(orderService.getOrder(orderId), HttpStatus.OK);
+        return orderService.getOrder(orderId);
     }
 
     @Operation(summary = "주문 영수증 출력")
