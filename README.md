@@ -17,7 +17,6 @@
 
 ---
 
-![웹페이지 메인화면](https://github.com/user-attachments/assets/a84c9f52-0483-4588-80f9-f05b05d42019)
 ![웹페이지 메인화면](https://github.com/user-attachments/assets/1da5f825-5be5-454e-b188-e14f244402c9)
 
 ## 구성원별 역할
