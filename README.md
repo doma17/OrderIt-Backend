@@ -1,6 +1,6 @@
 # OrderIt - 음성인식 AI를 활용한 키오스크 주문 서비스
 
-<p align="center"><img src="https://github.com/doma17/OrderIt/assets/67214970/8dfd508c-5a5c-4d44-a04c-a3131a9d9674" width="500" height="400">
+<p align="center"><img src="https://github.com/user-attachments/assets/24759070-3f36-4c14-bcc2-de6dc72f85d3" width="500" height="400">
 
 ## 소개
 
